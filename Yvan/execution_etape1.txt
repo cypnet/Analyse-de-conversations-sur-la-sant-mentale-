@@ -1,0 +1,40 @@
+﻿1. NETTOYAGE DES DONNÉES
+Lignes conservées après nettoyage : 2748
+Patients uniques                  : 995
+Thérapeutes uniques               : 2479
+Moyenne de réponses par patient   : 2.76
+
+2. DICTIONNAIRE LEXICAL (TOP 10)
+
+Top 10 Mots Patients :
+   Mot  Frequence
+   don        434
+  feel        415
+  like        390
+  know        323
+  just        318
+  want        313
+    ve        267
+  time        263
+ years        236
+really        190
+
+Top 10 Mots Thérapeutes :
+         Mot  Frequence
+        feel       2145
+        help       1888
+        like       1812
+relationship       1661
+        time       1496
+      people       1409
+   therapist       1321
+         way       1281
+        want       1234
+        know       1225
+
+3. IDENTIFICATION DES SUJETS (LDA)
+Sujet 1 : feel, just, know, time, ve
+Sujet 2 : don, like, feel, want, know
+Sujet 3 : need, help, feel, know, depression
+Sujet 4 : child, fix, remember, people, therapist
+Sujet 5 : feel, like, time, don, think
