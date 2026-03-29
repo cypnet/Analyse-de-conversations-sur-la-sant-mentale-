@@ -2,3 +2,5 @@ emin/venv/
 .ipynb_checkpoints/
 __pycache__/
 *.pycgit ad
+**/.env/
+**/.venv/
