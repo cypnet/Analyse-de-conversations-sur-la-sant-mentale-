@@ -122,4 +122,4 @@ Le jeu de données utilisé est publié sur [Kaggle](https://www.kaggle.com/data
 
 ## 📄 Licence
 
-Projet académique — Université de Toulouse, 2026. Usage éducatif uniqu
+Projet académique — Université de Toulouse, 2026. Usage éducatif uniquement.
