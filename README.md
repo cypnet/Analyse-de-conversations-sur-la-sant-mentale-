@@ -1,4 +1,11 @@
-# 🧠 Analyse de conversations patient-thérapeute sur la santé mentale
+# Analyse de conversations patient-thérapeute sur la santé mentale
+
+<div align="center">
+  <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Flatestlogo.com%2Fwp-content%2Fuploads%2F2025%2F07%2Funiversite-de-toulouse-logo-scaled.png&f=1&nofb=1&ipt=e30d2c423bcf905088eba3bbf558bfd8e3cd3f9f4de9dee853e1eeaefa627440" alt="Université de Toulouse" width="300">
+  &nbsp;&nbsp;&nbsp;
+  <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.irit.fr%2FSTORM%2Fsite%2Fwp-content%2Fuploads%2F2022%2F10%2FLogo_intitule_horiz_1ligne_tutelles_PNG.png&f=1&nofb=1&ipt=4fb92cd5e46a5343e8d3969f6e82e3e26b32dab3a70a4b6fd0235f049f6d3f2b" alt="IRIT" width="300">
+</div><br>
+
 
 > Projet universitaire — Université de Toulouse | IRIT | [Info5.BE-SHS]  
 > Encadrante : **Lynda Tamine-Lechani**
