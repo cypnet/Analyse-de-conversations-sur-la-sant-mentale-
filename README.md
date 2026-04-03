@@ -109,6 +109,7 @@ Le jeu de données utilisé est publié sur [Kaggle](https://www.kaggle.com/data
 | Cahier des charges | 15 mars 2026 | ✅ Rendu |
 | Bilan de mi-parcours | 20 avril 2026 | 🔄 En cours |
 | Livrable technique mensuel | Mensuel | 🔄 En cours |
+| Compte rendu des étapes | Chaque fin <br> d'étapes | 🔄 En cours |
 | Rapport final + documentation technique | 1 juin 2026 | ⏳ À venir |
 
 ---
@@ -119,9 +120,9 @@ Le jeu de données utilisé est publié sur [Kaggle](https://www.kaggle.com/data
 
 | Groupe 1 — Résumé des conversations | Groupe 2 — Q/R sur la santé mentale |
 |--------------------------------------|--------------------------------------|
-| Logan LARROUX (Chef de groupe) | Idir YAHIAOUI (Chef de groupe) |
+| Cruz FERNANDES DIOGO (Chef de groupe) | Idir YAHIAOUI (Chef de groupe) |
 | Ulysse CHASSEIGNE | Bantsoukissa LAURE |
-| Cruz FERNANDES DIOGO | Esso-Y-N Trésor PANA |
+| Logan LARROUX | Esso-Y-N Trésor PANA |
 | Emin BELKHEIR | Yvan SELLIER |
 | Victor BLANQUART-BLANCHET | Lucas DA SILVA |
 
