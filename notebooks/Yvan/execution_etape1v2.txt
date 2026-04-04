@@ -1,0 +1,36 @@
+--- 1. NETTOYAGE DES DONNÉES
+Lignes conservées après nettoyage : 2748
+
+--- 2. STATISTIQUES RÉCAPITULATIVES
+Nombre de patients uniques                 : 995
+Nombre de thérapeutes uniques              : 2479
+Nombre d'échanges moyen par conversation   : 2.76
+Le thérapeute le plus actif a répondu à    : 2 conversations différentes
+
+--- 3. DICTIONNAIRE LEXICAL
+    Les 3 fichiers CSV ont été générés avec succès.
+
+--- 4. IDENTIFICATION DES SUJETS MAJEURS
+
+  Méthode 1 : Lexique manuel
+Occurrences des mots choisis : {'stress': 33, 'anxiety': 91, 'sleep': 33, 'depression': 78, 'family': 125, 'trauma': 3, 'suicide': 8}
+
+  Méthode 2 : Clusters TF-IDF + K-Means
+Cluster TF-IDF 1 : good
+Cluster TF-IDF 2 : dont, feel, help, im, ive
+Cluster TF-IDF 3 : 20s, 30s, able, abuse, abused
+Cluster TF-IDF 4 : thinking
+
+  Méthode 3 : Clusters Word Embeddings (Word2Vec)
+Cluster Word2Vec 1 : broke, understand, cheated, scared, exboyfriend
+Cluster Word2Vec 2 : relationship, love, told, boyfriend, friends
+Cluster Word2Vec 3 : i, and, to, my, a
+Cluster Word2Vec 4 : half, done, fix, fiancé, doctor
+
+  Méthode 4 : Modèle LDA
+Sujet LDA 1 : depressed, feel, late, im
+Sujet LDA 2 : feel, im, like, dont
+Sujet LDA 3 : im, thoughts, afraid, child
+Sujet LDA 4 : im, dont, love, know
+
+Fin
