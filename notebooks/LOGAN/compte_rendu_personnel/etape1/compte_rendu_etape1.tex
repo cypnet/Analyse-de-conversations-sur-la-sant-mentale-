@@ -259,7 +259,7 @@ Après lemmatisation         & 16.29 & 59.69 \\
 \caption{Nombre de mots moyens par patients/thérapeutes selon les différentes étapes de nettoyage}
 \end{table}
 
-On peut donc constater que: \\
+On peut donc constater que:
 \begin{itemize}
   \item \textbf{avec les stopwords}, les thérapeutes utilisent plus de mots que les patients (\textbf{28.75\% de plus}).
   \item \textbf{après lemmatisation}, les thérapeutes utilisent plus de mots que les patients (\textbf{27.29\% de plus}).
@@ -269,9 +269,9 @@ On peut donc constater que: \\
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.45\textwidth]{graph_longRep_avec_stopwords.png}
+\includegraphics[width=0.65\textwidth]{graph_longRep_avec_stopwords.png}
 \hfill
-\includegraphics[width=0.45\textwidth]{graph_longRep_lemma.png}
+\includegraphics[width=0.65\textwidth]{graph_longRep_lemma.png}
 \caption{Distribution des longueurs des messages des thérapeutes avant et après lemmatisation}
 \end{figure}
 
@@ -344,6 +344,15 @@ ce qui confirme l'importance du filtrage préalable.
 
 Un \textbf{n-gram} est une séquence de $n$ mots consécutifs dans un texte. Cette approche
 permet de capturer non seulement les mots isolés, mais aussi les associations de mots fréquentes.
+\begin{itemize}
+  \item \textbf{Unigram (n=1)} : mots individuels, ex. \textit{"anxiety"}, \textit{"depression"}.
+  \item \textbf{Bigram (n=2)} : paires de mots, ex. \textit{"mental health"}, \textit{"feel like"}.
+  \item \textbf{Trigram (n=3)} : triplets de mots, ex. \textit{"feel like cry"}, \textit{"family support system"}.
+  \item ainsi de suite\dots
+\end{itemize}
+\vspace{1px}
+
+Dans notre travail, nous allons devoir repérer des formulations récurrentes qui ont du sens:
 
 \begin{table}[h]
 \centering
@@ -371,14 +380,72 @@ ce choix :
         seule fois, la taille $n$ est trop grande pour le corpus.
 \end{itemize}
 
-L'analyse a montré qu'à partir de $n = 1$, la fréquence diminue déjà fortement. Cependant,
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{graph_n_optimal.png}
+\caption{Graphe de fréquence moyenne et pourcentage d'hapax en fonction de $n$}
+\end{figure}
+
+On remarque qu'à partir de $n = 1$, la fréquence diminue déjà fortement. Cependant,
 les bigrams et trigrams restent exploitables car le seuil d'hapax n'est pas dépassé.
+
+\pagebreak
 
 \subsection{Résultats}
 
 Les bigrams et trigrams apportent un contexte nettement plus riche que les unigrams seuls.
 Ils permettront par la suite d'identifier des patrons linguistiques et des thèmes récurrents
 pour le topic modeling.
+
+\vspace{10px}
+
+\begin{table}[h]
+\centering
+\begin{tabularx}{0.65\textwidth}{lc||lc}
+\toprule
+\textbf{Unigram} & \textbf{fréquence} & \textbf{Unigram} & \textbf{fréquence}\\
+\midrule
+\textit{relationship} & 486 & \textit{help} & 2150\\
+\textit{love} & 431 & \textit{relationship} & 1933\\
+\textit{friend} & 369 & \textit{way} & 1668\\
+\bottomrule
+\end{tabularx}
+\caption{Trois plus fréquent \textbf{unigram} pour les patients (gauche) et thérapeutes (droite)}
+\end{table}
+
+\vspace{10px}
+
+\begin{table}[h]
+\centering
+\begin{tabularx}{0.65\textwidth}{lc||lc}
+\toprule
+\textbf{Bigram} & \textbf{fréquence} & \textbf{Bigram} & \textbf{fréquence}\\
+\midrule
+\textit{issue address} & 94 & \textit{therapist help} & 160\\
+\textit{self esteem} & 65 & \textit{ask question} & 154\\
+\textit{month ago} & 64 & \textit{mental health} & 153\\
+\bottomrule
+\end{tabularx}
+\caption{Trois plus fréquent \textbf{bigram} pour les patients (gauche) et thérapeutes (droite)}
+\end{table}
+
+\vspace{10px}
+
+\begin{table}[h]
+\centering
+\begin{tabularx}{0.9\textwidth}{lc||lc}
+\toprule
+\textbf{Trigram} & \textbf{fréquence} & \textbf{Trigram} & \textbf{fréquence}\\
+\midrule
+\textit{history sexual abuse} & 51 & \textit{hello thank question} & 68\\
+\textit{low self esteem} & 50 & \textit{mental health professional} & 52\\
+\textit{couple therapy session} & 48 & \textit{landwehr dbh lpc} & 51\\
+\bottomrule
+\end{tabularx}
+\caption{Trois plus fréquent \textbf{trigram} pour les patients (gauche) et thérapeutes (droite)}
+\end{table}
+
+\pagebreak
 
 % ══════════════════════════════════════════════════════════════════════════════
 \section{Modélisation et extraction de sujets (Topic Modeling)}
@@ -693,4 +760,9 @@ prochaine étape consistera à analyser les sentiments des échanges afin de qua
 polarité émotionnelle des conversations.
 
 % ══════════════════════════════════════════════════════════════════════════════
+\pagebreak
+
+\section{Ressources}
+
+
 \end{document}
