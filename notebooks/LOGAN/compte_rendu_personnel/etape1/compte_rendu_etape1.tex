@@ -25,6 +25,10 @@
 \usepackage{multirow}
 \usepackage{longtable}
 
+% Graphics
+\usepackage{graphicx}
+\graphicspath{{../img/}{img/}{./img/}}
+
 % ── Code source ────────────────────────────────────────────────────────────────
 \usepackage{listings}
 \usepackage{xcolor}
@@ -57,6 +61,8 @@
 
 % ── En-têtes / pieds de page ───────────────────────────────────────────────────
 \usepackage{fancyhdr}
+\setlength{\headheight}{14.2pt}
+\addtolength{\topmargin}{-2.2pt}
 \pagestyle{fancy}
 \fancyhf{}
 \lhead{\small Analyse de conversations patient-thérapeute - Étape 1}
@@ -149,6 +155,7 @@ pour cette étape, via \texttt{nlp.pipe()} afin de traiter les données en batch
 temps de traitement.
 
 \subsection{Suppression de la ponctuation et des mots vides}
+\label{stopwords}
 
 Les \textit{stopwords} (mots vides) sont des mots sans réelle signification sémantique
 (pronoms, adverbes, mots de liaison). spaCy les identifie automatiquement via l'attribut
@@ -253,28 +260,83 @@ Après lemmatisation         & 16.29 & 59.69 \\
 \end{table}
 
 On peut donc constater que: \\
-\textbf{avec les stopwords}, les thérapeutes utilisent plus de mots que les patients (\textbf{28.75\% de plus}) et
-\textbf{après lemmatisation}, les thérapeutes utilisent plus de mots que les patients (\textbf{27.29\% de plus}).
+\begin{itemize}
+  \item \textbf{avec les stopwords}, les thérapeutes utilisent plus de mots que les patients (\textbf{28.75\% de plus}).
+  \item \textbf{après lemmatisation}, les thérapeutes utilisent plus de mots que les patients (\textbf{27.29\% de plus}).
+\end{itemize}
 
-  
+\vspace{0.5cm}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.45\textwidth]{graph_longRep_avec_stopwords.png}
+\hfill
+\includegraphics[width=0.45\textwidth]{graph_longRep_lemma.png}
+\caption{Distribution des longueurs des messages des thérapeutes avant et après lemmatisation}
+\end{figure}
+
+\pagebreak
+
+\subsection{Mots les plus fréquents}
+En précisant que l'on a retiré des stopwords supplémentaires (mentionnée dans la section \ref{stopwords}),
+on peut constater que les mots les plus fréquents sont des termes génériques liés à la santé mentale, tels que
+\textit{"anxiety"}, \textit{"depression"}, \textit{"help"}, \textit{"family"}, \textit{"relationship"}, etc. 
+Ces mots reflètent les thèmes centraux abordés dans les conversations, une information supplémentaire qui nous sera utile
+dans les modèles.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.45\textwidth]{hist_mot_frequent_patient.png}
+\includegraphics[width=0.45\textwidth]{hist_mot_frequent_therapeute.png}
+\includegraphics[width=0.70\textwidth]{hist_mot_frequent_global.png}
+\caption{Mots les plus fréquents chez les patients/thérapeutes et globalement}
+
+\end{figure}
+
+Si on aurait gardé \textit{feel} des mots à analyser, on aurait remarqué ici que \textit{feel} 
+et \textit{feeling} sont deux termes distincts, alors que leur sens est très proche. 
+Cela vient du fait que spaCy \textbf{lemmatise différement selon le contexte grammatical} du mot.
+Quand feeling est utilisé comme nom (\textit{"a feeling of anxiety"}), spaCy le garde tel quel au lieu de le remener à \text{feel}.\\
+Ensuite, \textit{like} est un mot ambigue en anglais, il peut être un verbe (\textit{"I like this"}) ou une préposition (\textit{"feel like crying"}), 
+auquel cas c'est quasiment un mot vide d'où sa suppression. 
+
+\pagebreak
 
 \subsection{Corrélation patient / thérapeute}
 
-La corrélation entre la longueur du message du patient et celle de la réponse du thérapeute
-a été calculée. Le résultat obtenu est une \textbf{corrélation proche de 0} ($\approx 0.05$).
+La correlation mesure, dans notre cas, le lien qu'il peut y avoir entre la longueur des phrases du patient et du thérapeute.
+Cela nous permet de voir si les thérapeutes adaptent la longueur de leurs réponses à celle des messages des patients, 
+ou si au contraire ils utilisent des réponses de longueur relativement constante indépendamment de la longueur du message patient.
 
-Cela signifie qu'un patient peut s'exprimer longuement et recevoir une réponse courte, et
-inversement. Les réponses des thérapeutes semblent donc relativement indépendantes de la
+Le résultat obtenu est une \textbf{corrélation proche de 0} ($\approx 0.05$), 
+cela signifie qu'\textbf{un patient peut s'exprimer longuement et recevoir une réponse courte, et
+inversement}. Les réponses des thérapeutes semblent donc relativement indépendantes de la
 longueur des messages patients, ce qui peut s'expliquer par l'utilisation de réponses
 standardisées ou formulées de façon uniforme.
 
-\subsection{Hapax legomena}
-
-Un \textit{hapax} est un mot qui n'apparaît qu'une seule fois dans le corpus. L'analyse des
-mots les moins fréquents a révélé que la plupart des hapax sont du bruit résiduel (abréviations,
-artefacts de nettoyage), ce qui confirme l'importance du filtrage préalable.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.6\textwidth]{plot_correlation_patient_therapeute.png}
+\caption{Nuage de points représentant la longueur des messages patients (en abscisse) et thérapeutes (en ordonnée)}
+\end{figure}
 
 \pagebreak
+
+\subsection{Hapax legomena}
+
+Un \textit{hapax} est un mot qui n'apparaît qu'\textbf{une seule fois dans le corpus}. L'analyse des
+mots les moins fréquents a révélé que la plupart des hapax sont du \textbf{bruit résiduel} (abréviations,
+artefacts de nettoyage ou même mot en espagnol passé à travers les mailles du fillet), 
+ce qui confirme l'importance du filtrage préalable.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.80\textwidth]{hist_hapax_patient.png}
+\includegraphics[width=0.80\textwidth]{hist_hapax_therapeute.png}
+\caption{Distribution des hapax dans le corpus}
+\end{figure}
+
+\clearpage
 % ══════════════════════════════════════════════════════════════════════════════
 \section{Analyse lexicale — N-grams}
 
