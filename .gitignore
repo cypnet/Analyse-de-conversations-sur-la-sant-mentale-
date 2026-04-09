@@ -4,3 +4,15 @@ __pycache__/
 *.pycgit ad
 **/.env/
 **/.venv/
+
+# Fichiers temporaire LaTeX
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+
+# Dossiers générés par Jupyter
+.ipynb_checkpoints/
