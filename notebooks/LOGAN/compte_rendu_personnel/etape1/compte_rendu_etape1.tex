@@ -587,17 +587,44 @@ discrimine mieux les termes et les scores sont plus significatifs.
 
 \pagebreak
 
-\subsubsection{Clustering K-Means}
+\subsubsection{Vectorisation TF-IDF}
+Nous allons utiliser la fonction \texttt{TfidfVectorizer} de la bibliothèque \textbf{scikit-learn}.
+Cette fonction à de grand avantages, elle permet de:
+\begin{itemize}
+  \item lister tout les mots uniques
+  \item définir le score TF
+  \item définir le score IDF
+  \item définir le score final et vecteur L2
+\end{itemize}
+\vspace{10px}
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{hist_tfidf_top_mot_important.png}
+\caption{Histogramme des 10 mots les plus importants selon le score TF-IDF}
+\end{figure}
+
+\subsubsection{Clustering K-Means}
+Nous allons devoir maintenant regroupper les mots similaires en clusters,
+or nous devons dans un premier temps définir le nombre de clusters $K$ à utiliser.
+Un des risques est de choisir un $K$ trop petit ou trop grand, 
+ce qui peut conduire à des clusters peu significatifs ou à un sur-apprentissage.
 La méthode du coude (\textit{elbow method}) a été utilisée pour déterminer le nombre optimal
 de clusters $K$. L'inertie diminue fortement jusqu'à $K = 6$, puis la courbe se stabilise.
-\textbf{$K = 6$ a donc été retenu.}
+\textbf{K = 6 a donc été retenu.}
 
-\subsubsection{Résultats}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.45\textwidth]{graph_methode_coude.png}
+\caption{Graphe de la méthode du coude pour déterminer le nombre optimal de clusters $K$}
+\end{figure}
 
-\begin{longtable}{p{2.2cm}p{3.8cm}p{3.8cm}p{4cm}}
+\subsubsection{Résultats\protect\footnote[1]{à noter que les thèmes décrit pour les patients et thérapeutes sont des observations visuelles et non généré par le modèle, celui-ci génère uniquement les groupes de mots.}}
+
+
+\begin{longtable}{p{2.2cm}|p{3.8cm}|p{3.8cm}|p{4cm}}
 \toprule
- & \textbf{Patient} & \textbf{Thérapeute} & \textbf{Global} \\
+\textbf{Clusters} & \textbf{Patient} & \textbf{Thérapeute} & \textbf{Global} \\
 \midrule
 \endhead
 Cluster 0 & Dépression sévère — idées suicidaires & Soutien initial — écoute & Dépression sévère $\to$ écoute \\
@@ -611,10 +638,18 @@ Cluster 5 & Problèmes familiaux — divorce — identité & Soutien familial & 
 \end{longtable}
 
 Les clusters sont basés sur des similarités lexicales. On note un léger chevauchement entre
-les clusters 0 et 2 (dépression), ce qui peut s'interpréter positivement : la dépression peut
+les clusters 0 et 2 (dépression), \textbf{ce qui peut s'interpréter positivement} : la dépression peut
 provenir de sources différentes (fatigue mentale vs. idées suicidaires). Ce détail révèle que
-les conversations ne sont pas aléatoires — les thérapeutes adaptent leur stratégie de réponse
+\textbf{les conversations ne sont pas aléatoires} — les thérapeutes adaptent leur stratégie de réponse
 en fonction du type de détresse exprimée par le patient.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{scatter_cluster_tfidf.png}
+\caption{Projection en 2 dimenssions des conversations dans l'espace TF-IDF avec les clusters K-Means colorés}
+\end{figure}
+
+\textbf{Attention}, le plan est applatit sur deux dimenssions, ce qui peut masquer des nuances présentes dans les dimensions originales.
 
 
 \clearpage
@@ -669,9 +704,9 @@ fusionnés par moyenne pour obtenir un vecteur par échange.
 
 \subsubsection{Résultats}
 
-\begin{longtable}{p{2.2cm}p{3.8cm}p{3.8cm}p{4cm}}
+\begin{longtable}{p{2.2cm}|p{3.8cm}|p{3.8cm}|p{4cm}}
 \toprule
- & \textbf{Patient} & \textbf{Thérapeute} & \textbf{Global} \\
+\textbf{Clusters} & \textbf{Patient} & \textbf{Thérapeute} & \textbf{Global} \\
 \midrule
 \endhead
 Cluster 0 & Dépression sévère — idées suicidaires & Soutien émotionnel & Dépression $\to$ soutien \\
@@ -689,7 +724,13 @@ pour les patients où la dépression est regroupée dans un seul cluster au lieu
 cohérence entre les problématiques des patients et les stratégies des thérapeutes est également
 plus lisible.
 
+\vspace{20px}
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{scatter_cluster_word2vec.png}
+\caption{Projection en 2 dimenssions des conversations dans l'espace Word2Vec avec les clusters K-Means colorés}
+\end{figure}
 \clearpage
 % ── Méthode 4 ─────────────────────────────────────────────────────────────────
 \subsection{Méthode 4 — Modèle probabiliste LDA}
@@ -713,6 +754,7 @@ LDA produit deux sorties :
   \item \textbf{Thèmes $\to$ mots} : distribution des mots caractéristiques pour chaque thème.
   \item \textbf{Documents $\to$ thèmes} : proportion de chaque thème dans chaque conversation.
 \end{enumerate}
+
 
 \subsubsection{Résultats — Patients}
 
@@ -752,6 +794,8 @@ Topic 5 & Dépression — accompagnement & depression, anxiety, help, support \\
 \caption{Topics LDA — Thérapeutes}
 \end{table}
 
+\pagebreak
+
 \subsubsection{Résultats — Global}
 
 \begin{table}[h]
@@ -776,6 +820,7 @@ relations de couple, parentalité, troubles anxieux et suivi thérapeutique. La 
 modèle probabiliste permet à chaque conversation d'appartenir à plusieurs thèmes simultanément,
 ce qui est plus fidèle à la réalité des échanges thérapeutiques.
 
+\clearpage
 % ══════════════════════════════════════════════════════════════════════════════
 \section{Comparaison des méthodes}
 
