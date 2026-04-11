@@ -1,0 +1,68 @@
+
+Analyse de conversations patient-thérapeute sur la santé mentale 
+
+
+Encadrant : Lynda Tamine-Lechani
+email : lynda.lechani@irit.fr 
+Laboratoire : IRIT 
+
+
+1. Descriptif 
+   L'objectif de ce bureau d'études est double : 
+1) Analyser un corpus de textes 
+2) Analyser les sentiments des conversations
+    3) Résumer des conversations
+    3) Développer un système de question-réponse sur la santé mentale.
+
+Vous travaillerez sur des conversation, échanges (dialogues en formats texte) entre patients et  psychlogues. Ce corpus contient les fichiers textes des symptômes/ressentis/contextes présentés par les patients ainsi que les réponses des thérapeutes. L'ensemble de données a été publié par KAGGLE (https://www.kaggle.com/datasets/thedevastator/nlp-mental-health-conversations). 
+
+Langage/Software : programmation Python, analyse de textes, analyse d'opinions 
+
+
+2. Méthodologie
+
+Etape 1 : Exploration du jeu de données
+
+Qui fait : TOUS- comparer vos résultats
+
+Tableau statistique récapitulatif : nombre de patients, nombre de thérapeutes, nombre de conversation par thérapeute, nombre d’échanges moyen par conversation
+Fournir un dictionnaire lexical : tableau des statistiques des mots, fréquences par conversation, fréquence par patient, fréquence par thérapeute
+Identifier des sujets majeurs (eg., stress, anxiété, ...) en utilisant : 
+En utilisant un lexique de votre choix
+En utilisant des clusters de mots représentés sous forme de vecteurs tf-idf des mots
+En utilisant des clusters de word embeddings
+En utilisant un modèle d’extraction de sujet LDA
+
+
+Etape 2 Analyse des sentiments des conversations
+Qui fait : TOUS- comparer vos résultats
+
+
+
+Etape 3 : Accès aux conversations
+
+Partie 1 : Résumé des conversations
+
+Partie 2 : Question-réponse sur la santé mentale
+
+
+
+3. Organisation
+
+Former 2 groupes d’ étudiants pour réaliser chaque partie (partie 1, partie 2).
+Désigner un chef de projet. 
+Désigner un chef de groupe-partie et un rôle à chaque membre du groupe
+Organiser une réunion par groupe-partie par semaine : identifier les difficultés, évaluer l’avancement,  indiquer les informations à remonter au chef de projet
+Organiser une réunion des chefs de groupes toutes les 2 semaines avec le chef projet identifier les difficultés, évaluer l’avancement, indiquer les informations à remonter à l’enseignante
+Constituer un livrable éditable par les membres du groupe
+Dresser un planning de Gantt au début du projet
+
+4. Livrables
+- Voir documents à livrer avec M. Dugat
+- Voir calendrier de remise des documents avec M. Dugat
+- Ce que je demande en livrable final :
+* Document qui explique le travail réalisé par chaque groupe dans chaque partie (1 seul rendu concerté pour la partie 1)
+* GhitHub propre, documenté.
+
+5. Ressources
+

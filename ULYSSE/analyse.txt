@@ -1,0 +1,17 @@
+Etape de l'analyse des données :
+
+Partie 1 :
+- trouver le nombre de patient
+- trouver le nombre de thérapeute
+- nombre de conversation par thérapeute
+- nombre d'échange moyen par conversation
+- dictionnaire de mot (avec la fréquence pour chaque mot)
+- fréquence des mots par patient
+- fréquence des mots par thérapeute
+- identification de sujets majeurs tel que le stress ou l'anxiété
+    - lexique de mon choix
+    - par des clusters de mots
+    - word embedding
+    - modèle d'extraction de sujet LDA
+
+Partie 2 : on verra après la partie 1
