@@ -30,6 +30,10 @@
 \usepackage{graphicx}
 \graphicspath{{../img/}{img/}{./img/}}
 
+% ── Schémas ───────────────────────────────────────────────────────────────────
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric, fit}
+
 % ── wrapfigure ─────────────────────────────────────────────────────────────────
 \usepackage{wrapfig}
 
@@ -142,6 +146,58 @@ interactions et fournir des réponses.
 Le jeu de données utilisé est composé de deux colonnes : \texttt{Context} (messages du patient)
 et \texttt{Response} (réponses du thérapeute).
 
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  node distance=8mm,
+  >=Latex,
+  box/.style={rounded corners, draw=blue!70!black, thick, fill=blue!5, align=center, text width=2.2cm, minimum height=0.9cm, inner sep=3pt, font=\small},
+  method/.style={box, text width=2cm, minimum height=0.8cm},
+  group/.style={draw=orange!75!black, rounded corners, dashed, inner sep=4pt, thick},
+  arrow/.style={-Latex, thick, draw=blue!70!black}
+]
+
+  % Points d'entrée et de sortie
+  % Branches d'analyse au-dessus
+  \node[box] (stats) {Statistiques};
+  \node[box, right=of stats] (lex) {Lexique};
+
+  % Flux principal horizontal en dessous
+  \node[box, below=1.5cm of stats] (data) {\textbf{train.csv}};
+  \node[box, right=of data] (clean) {Nettoyage};
+  \node[box, right=of clean] (prep) {Pré-traitement};
+  \node[box, right=of prep] (topic) {Topic\\Modeling};
+
+  % Méthodes alignées horizontalement en bas
+  \node[method, below=1.2cm of data] (m1) {Méthode 1\\lexique métier};
+  \node[method, right=of m1] (m2) {Méthode 2\\TF-IDF};
+  \node[method, right=of m2] (m3) {Méthode 3\\Word2Vec};
+  \node[method, right=of m3] (m4) {Méthode 4\\LDA};
+
+  \node[group, fit=(m1) (m2) (m3) (m4), label=below:\small\textbf{Comparaison des méthodes}] (methods) {};
+
+  % Grille de flèches
+
+  % --- Flèches d'entrée et de sortie ---
+  % \draw[arrow] (input) -- (data.west) node[midway, above, align=center, font=\tiny] {};
+  % \draw[arrow] (topic.east) -- (output) node[midway, above, align=center, xshift=10pt, yshift=10pt, font=\tiny] {Étape 2\\Analyse des sentiments \\des conversations};
+
+  % Flux principal horizontal
+  \draw[arrow] (data) -- (clean);
+  \draw[arrow] (clean) -- (prep);
+  \draw[arrow] (prep) -- (topic);
+
+  % Flèches horizontales entre branches d'analyse
+  \draw[arrow] (clean.north) -- ++(0, 0.6) -| (stats.south);
+  \draw[arrow] (clean.north) -| (lex.south);
+
+  % Flèches vers les méthodes
+  \draw[arrow] (topic.south) -- ++(0, -0.6) -| (methods.north);
+
+\end{tikzpicture}
+\caption{Vue d'ensemble de l'étape 1 : exploration du jeu de données et extraction des sujets.}
+\label{fig:flowchart-etape1}
+\end{figure}
 % ══════════════════════════════════════════════════════════════════════════════
 \section{Pré-traitement des données}
 
