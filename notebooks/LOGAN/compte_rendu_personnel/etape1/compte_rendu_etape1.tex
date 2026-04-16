@@ -146,6 +146,8 @@ interactions et fournir des réponses.
 Le jeu de données utilisé est composé de deux colonnes : \texttt{Context} (messages du patient)
 et \texttt{Response} (réponses du thérapeute).
 
+\bigbreak
+
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}[
@@ -157,30 +159,31 @@ et \texttt{Response} (réponses du thérapeute).
   arrow/.style={-Latex, thick, draw=blue!70!black}
 ]
 
-  % Points d'entrée et de sortie
-  % Branches d'analyse au-dessus
-  \node[box] (stats) {Statistiques};
-  \node[box, right=of stats] (lex) {Lexique};
-
   % Flux principal horizontal en dessous
-  \node[box, below=1.5cm of stats] (data) {\textbf{train.csv}};
-  \node[box, right=of data] (clean) {Nettoyage};
-  \node[box, right=of clean] (prep) {Pré-traitement};
-  \node[box, right=of prep] (topic) {Topic\\Modeling};
+  \node[box] (data) {\textbf{train.csv}};
+  \node[box, below=of data] (clean) {Nettoyage};
+  \node[box, below=of clean] (prep) {Pré-traitement};
+  \node[box, below=of prep] (topic) {Topic\\Modeling};
 
-  % Méthodes alignées horizontalement en bas
-  \node[method, below=1.2cm of data] (m1) {Méthode 1\\lexique métier};
-  \node[method, right=of m1] (m2) {Méthode 2\\TF-IDF};
-  \node[method, right=of m2] (m3) {Méthode 3\\Word2Vec};
-  \node[method, right=of m3] (m4) {Méthode 4\\LDA};
+  % Méthode de Nettoyage
+  \node[method, left=of clean] (n1) {suppression\\ponctuation};
+  \node[method, below=of n1, text width=2.5cm] (n2) {lemmatisation};
+  \node[method, left=of n2] (n3) {tokenisation};
+  \node[method, left=of n1] (n4) {filtrage\\stopwords};
+  \node[group, fit=(n1) (n2) (n3) (n4), label=below:\small\textbf{Comparaison des méthodes}] (methods1) {};
 
-  \node[group, fit=(m1) (m2) (m3) (m4), label=below:\small\textbf{Comparaison des méthodes}] (methods) {};
-
+  % Méthodes de Topic Modeling
+  \node[method, right=of topic] (tm1) {Méthode 1\\Lexique métier};
+  \node[method, right=of tm1] (tm2) {Méthode 2\\TF-IDF};
+  \node[method, below=of tm1] (tm3) {Méthode 3\\Word2Vec};
+  \node[method, below=of tm2] (tm4) {Méthode 4\\LDA};
+  % décaler le groupe entier vers la gauche
+  \node[group, fit=(tm1) (tm2) (tm3) (tm4), label=below:\small\textbf{Comparaison des méthodes}] (methods2) {};
+  
   % Grille de flèches
 
-  % --- Flèches d'entrée et de sortie ---
-  % \draw[arrow] (input) -- (data.west) node[midway, above, align=center, font=\tiny] {};
-  % \draw[arrow] (topic.east) -- (output) node[midway, above, align=center, xshift=10pt, yshift=10pt, font=\tiny] {Étape 2\\Analyse des sentiments \\des conversations};
+  % --- Flèches de sortie ---
+  \draw[arrow] (topic.south) -- ++(0,-0.5) node[below] {\small Thèmes extraits};
 
   % Flux principal horizontal
   \draw[arrow] (data) -- (clean);
@@ -188,16 +191,15 @@ et \texttt{Response} (réponses du thérapeute).
   \draw[arrow] (prep) -- (topic);
 
   % Flèches horizontales entre branches d'analyse
-  \draw[arrow] (clean.north) -- ++(0, 0.6) -| (stats.south);
-  \draw[arrow] (clean.north) -| (lex.south);
-
-  % Flèches vers les méthodes
-  \draw[arrow] (topic.south) -- ++(0, -0.6) -| (methods.north);
+  \draw[arrow] (clean.west) -- ++(-0.2,0) -- ++(0, 1.3) -| (methods1.north);
+  \draw[arrow] (topic.east) -- ++(0.4,0) -- ++(0, 1.3) -| (methods2.north);
 
 \end{tikzpicture}
-\caption{Vue d'ensemble de l'étape 1 : exploration du jeu de données et extraction des sujets.}
+\caption{\centering Vue d'ensemble de l'étape 1 : \break Exploration du jeu de données et extraction des sujets.}
 \label{fig:flowchart-etape1}
 \end{figure}
+
+\pagebreak
 % ══════════════════════════════════════════════════════════════════════════════
 \section{Pré-traitement des données}
 
