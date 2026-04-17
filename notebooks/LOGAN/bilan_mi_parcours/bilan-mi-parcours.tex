@@ -1,0 +1,260 @@
+\documentclass[12pt,a4paper]{article}
+
+% ── Encodage & langue ──────────────────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+
+% ── Mise en page ───────────────────────────────────────────────────────────────
+\usepackage[top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
+\usepackage{parskip}
+\usepackage{setspace}
+\usepackage[stable]{footmisc}
+\onehalfspacing
+
+% ── Typographie ────────────────────────────────────────────────────────────────
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% ── Mathématiques ──────────────────────────────────────────────────────────────
+\usepackage{amsmath, amssymb}
+
+% ── Tableaux ───────────────────────────────────────────────────────────────────
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{longtable}
+
+% ── Graphics ───────────────────────────────────────────────────────────────────
+\usepackage{graphicx}
+\graphicspath{{../img/}{img/}{./img/}}
+
+% ── Schémas ───────────────────────────────────────────────────────────────────
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric, fit}
+
+% ── wrapfigure ─────────────────────────────────────────────────────────────────
+\usepackage{wrapfig}
+
+% ── Code source ────────────────────────────────────────────────────────────────
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codebg}{RGB}{245,245,245}
+\definecolor{codeframe}{RGB}{200,200,200}
+\definecolor{codecomment}{RGB}{100,100,100}
+\definecolor{codestring}{RGB}{163,21,21}
+\definecolor{codekeyword}{RGB}{0,0,255}
+
+\lstset{
+  backgroundcolor=\color{codebg},
+  frame=single,
+  rulecolor=\color{codeframe},
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{codekeyword}\bfseries,
+  stringstyle=\color{codestring},
+  commentstyle=\color{codecomment}\itshape,
+  breaklines=true,
+  showstringspaces=false,
+  language=Python,
+  literate=
+    {é}{{\'{e}}}1 {è}{{\`{e}}}1 {ê}{{\^{e}}}1 {ë}{{\"e}}1
+    {à}{{\`{a}}}1 {â}{{\^{a}}}1 {î}{{\^{i}}}1 {ô}{{\^{o}}}1
+    {û}{{\^{u}}}1 {ù}{{\`{u}}}1 {ç}{{\c{c}}}1 {œ}{{\oe}}1
+}
+
+% ── Hyperliens ─────────────────────────────────────────────────────────────────
+\usepackage[colorlinks=true, linkcolor=blue!70!black, urlcolor=blue!70!black]{hyperref}
+
+% ── En-têtes / pieds de page ───────────────────────────────────────────────────
+\usepackage{fancyhdr}
+\setlength{\headheight}{14.2pt}
+\addtolength{\topmargin}{-2.2pt}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small Bilan Mi-Parcours}
+\rhead{\small LARROUX Logan}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\begin{document}
+
+% ── Page de titre ──────────────────────────────────────────────────────────────
+\begin{titlepage}
+  \centering
+
+  \vspace{3cm}
+
+  % ── Titre principal ──
+  {\fontsize{20}{22}\selectfont\bfseries
+    BILAN MI-PARCOURS\\
+    Analyse de conversations patient-thérapeute\\
+    sur la santé mentale\par}
+  {\color{blue!70!black}\rule{0.5\textwidth}{1.5pt}\par}
+  \vspace{0.5cm}
+
+
+  % ── Auteur & encadrante ──
+  {\large\bfseries Auteur: LARROUX Logan \\
+                   Encadrante : Lynda Tamine-Lechani\par}
+
+  % ── Date ──
+  {\fontsize{18}{22}\selectfont
+  \today\par}
+  
+  % ── Logo UT et IRIT ──
+  \vspace{1cm}
+  \begin{tabular}[t]{c}
+    \centering
+    \includegraphics[height=1.5cm]{universite-de-toulouse-logo.png}
+    \hspace{10px}
+    {\includegraphics[height=1.5cm]{IRIT_logo.png}}
+      \hspace{10px}
+    \raisebox{0.70cm}{\normalsize [Info5.BE-SHS]\par}
+  \end{tabular}
+
+
+  \vfill
+
+  % ── Liens en bas ──
+  {\color{blue!70!black}\rule{\textwidth}{0.4pt}\par}
+  \vspace{0.4cm}
+  {\small Données : \href{https://www.kaggle.com/datasets/thedevastator/nlp-mental-health-conversations}{Kaggle — NLP Mental Health Conversations}\par}
+  \vspace{0.2cm}
+  {\small Code : \href{https://github.com/cypnet/Analyse-de-conversations-sur-la-sant-mentale/tree/main/notebooks/LOGAN}{GitHub — branche Logan}\par}
+  \vspace{0.5cm}
+\end{titlepage}
+
+% ── Table des matières ─────────────────────────────────────────────────────────
+\tableofcontents
+\newpage
+
+% ── Introduction ───────────────────────────────────────────────────────────────
+\section{Introduction}
+Dans le cadre de l'ensiegnement Bureau d'Études (Info5.BE-SHS), notre équipe de dix étudiants de l'Université de Toulouse
+travaille, sous la supervision de Madame Lynda Tamine-Lechani, sur un projet d'analyse de conversation patient-thérapeute portant sur la santé mentale.   
+À partir d'un corpus issue de \href{https://www.kaggle.com/datasets/thedevastator/nlp-mental-health-conversations}{Kaggle}, 
+notre objectif est de développer un système capable d'extraire des informations pertinentes à partir de ces conversations, 
+afin de mieux comprendre les interactions entre patients et thérapeutes, et d'identifier les facteurs clés influençant la santé mentale des patients.
+
+Ce document est un bilan mi-parcours de notre projet, dans lequel nous présentons les étapes que nous avons suivies jusqu'à présent,
+ les objectifs atteints, les problèmes rencontrés, les solutions apportées et la suite du projet.
+\pagebreak
+
+% ── Avancée du projet ───────────────────────────────────────────────
+
+\section{Avancée du projet}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  node distance=8mm,
+  >=Latex,
+  box/.style={rounded corners, draw=blue!70!black, thick, fill=blue!5, align=center, text width=2.2cm, minimum height=0.9cm, inner sep=3pt, font=\small},
+  method/.style={box, font=\footnotesize, text width=2cm, minimum height=0.8cm, node distance=4mm},
+  group/.style={draw=orange!75!black, rounded corners, dashed, inner sep=4pt, thick},
+  biggergroup/.style={group, draw=red!70!black, inner sep=18pt},
+  arrow/.style={-Latex, thick, draw=blue!70!black}
+]
+
+  % Flux principal horizontal en dessous
+  \node[box] (data) {\textbf{train.csv}};
+  \node[box, below=of data] (clean) {Nettoyage};
+  \node[box, below=of clean] (stats) {Analyse\\statistique};
+  \node[box, below=of stats] (lex) {Analyse\\lexicale};
+  \node[box, below=of lex] (topic) {Topic\\Modeling};
+
+  \node[box, below=2cm of topic, text width=3cm] (sentiment) {Analyse sentiments\\conversations};
+
+  \node[box, below=2cm of sentiment, text width=3cm] (conversations) {Accès aux conversations};
+  \node[box, left=1cm of conversations, text width=3cm] (conversationG1) {Résumé des conversations};
+  \node[box, right=1cm of conversations, text width=3cm] (conversationG2) {Q/A sur la santé mentale};
+
+  % Méthode de Nettoyage
+  \node[method, left=1cm of data] (n1) {suppression\\ponctuation};
+  \node[method, below=0.2cm of n1, text width=2.5cm] (n2) {lemmatisation};
+  \node[method, left=0.2cm of n2] (n3) {tokenisation};
+  \node[method, left=0.2cm of n1] (n4) {filtrage\\stopwords};
+  \node[group, fit=(n1) (n2) (n3) (n4), label=above:\small\textbf{Comparaison des méthodes}] (methods1) {};
+
+  % Méthodes d'analyse statistiques
+  \node[method, right=1cm of data,, text width=2.5cm] (s1) {Nombre de mots moyens};
+  \node[method, right=of s1, text width=2.5cm] (s2) {Distribution des conversations};
+  \node[method, below=0.2cm of s1, text width=2.5cm] (s3) {Mots les plus fréquents};
+  \node[method, below=0.2cm of s2] (s4) {Hapax legomena};
+  \node[method, below=0.2cm of s3, text width=3cm, xshift=1.6cm] (s5) {Corrélation patient/thérapeute};
+  \node[group, fit=(s1) (s2) (s3) (s4) (s5), label=above:\small\textbf{Comparaison des mesures}] (methods2) {};
+
+  % Méthodes d'analyse lexicale
+  \node[method, left=1.5cm of lex, text width=3cm] (l1) {N-grams optimal\\Unigram ($N=1$)\\Bigram ($N=2$)\\Trigram ($N=3$)};
+  \node[group, fit=(l1), label=above:\small\textbf{Comparaison des N-grams}] (methods3) {};
+
+  % Méthodes de Topic Modeling
+  \node[method, right=1cm of lex, yshift=0.2cm] (tm1) {Méthode 1\\Lexique métier};
+  \node[method, right=0.2cm of tm1] (tm2) {Méthode 2\\TF-IDF};
+  \node[method, below=0.2cm of tm1] (tm3) {Méthode 3\\Word2Vec};
+  \node[method, below=0.2cm of tm2] (tm4) {Méthode 4\\LDA};
+  % décaler le groupe entier vers la gauche
+  \node[group, fit=(tm1) (tm2) (tm3) (tm4), label=above:\small\textbf{Comparaison des méthodes}] (methods4) {};
+
+  \node[biggergroup, fit=(methods1) (methods2) (methods3) (methods4) (topic), label=below left:\small\textbf{Étape 1}] (step1) {};
+  \node[biggergroup, fit=(sentiment), label=below left:\small\textbf{Étape 2}] (step2) {};
+  \node[biggergroup, fit=(conversations) (conversationG1) (conversationG2), label=below left:\small\textbf{Étape 3}] (step3) {};
+  
+  % Grille de flèches
+  % --- Flèches de sortie ---
+  % \draw[arrow] (topic.south) -- ++(0,-0.5) node[below] {\small Thèmes extraits};
+
+  % Flux principal horizontal
+  \draw[arrow] (data) -- (clean);
+  \draw[arrow] (clean) -- (stats);
+  \draw[arrow] (stats) -- (lex);
+  \draw[arrow] (lex) -- (topic);
+
+  \draw[arrow] (topic) -- (sentiment);
+
+  \draw[arrow] (sentiment) -- (conversations);
+  \draw[arrow] (conversations) -- (conversationG1);
+  \draw[arrow] (conversations) -- (conversationG2);
+
+
+  % Flèches horizontales entre branches d'analyse
+  \draw[arrow] (clean.west) -- ++(-0.4,0) -- ++(0,-0.3) -| (methods1.south);
+  \draw[arrow] (stats.east) -- ++(0.4,0) -| (methods2.south);
+  \draw[arrow] (lex.west) -- (methods3.east);
+  \draw[arrow] (topic.east) -- ++(0.4,0) -- ++(0, -0.3) -| (methods4.south);
+
+\end{tikzpicture}
+\caption{\centering Vue d'ensemble du travail réalisé à ce jour.}
+\label{fig:flowchart-etape1}
+\end{figure}
+
+% ── Rapport des réunions ────────────────────────────────────────────────────────
+\section{Rapport de réunions}
+
+\pagebreak
+% ── Problèmes rencontrés ────────────────────────────────────────────────────────
+\section{Problèmes rencontrés}
+
+\pagebreak
+% ── Solutions apportées ─────────────────────────────────────────────────────────
+\section{Solutions apportées}
+
+\pagebreak
+% ── Suite du projet ─────────────────────────────────────────────────────────────
+\section{Suite du projet}
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
