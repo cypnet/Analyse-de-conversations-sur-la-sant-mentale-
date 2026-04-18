@@ -35,7 +35,7 @@ Chaque membre de l'équipe a travaillé de façon **individuelle** sur ses propr
 
 ### 2.1 Prétraitement des données
 
-Chaque membre a adopté une stratégie de nettoyage plus ou moins stricte. Voici les deux approches représentatives :
+Chaque membre a adopté une stratégie de nettoyage plus ou moins stricte. Voici les deux exemples d'approches :
 
 **Approche minimaliste (Emin)** — suppression des lignes vides uniquement :
 
@@ -184,6 +184,8 @@ Les deux niveaux de filtrage sont **complémentaires** et révèlent des niveaux
 
 **Question ouverte :** Existe-t-il une méthode automatique pour pondérer les mots selon leur pertinence sémantique, sans les supprimer manuellement ?
 
+L'analyse lexicale donne ainsi une première image du corpus, ce dont les patients parlent et comment les thérapeutes leur répondent. Pour aller plus loin et identifier des **thématiques structurées** au sein de ces échanges, **quatre méthodes** de topic modeling ont été appliquées et comparées.
+
 ---
 
 ## 4. Topic Modeling — Méthode 1 : Lexique personnalisé
@@ -238,6 +240,8 @@ Les thèmes apparaissant de façon **transversale** dans toutes les conversation
 - **Dépression** (`depression`, `sad`, `hopeless`)
 - **Relations** (`relationship`, `love`, `partner`) — thème le plus fréquent
 
+> Avoir le thème *Relation* comme le plus fréquent peut sembler logique au vue du contexte du Dataframe, mais sela ne veut pas dire qu'il n'existe pas d'autres thèmes bien plus important et auquels on ne penserait pas directement.
+
 ### 4.3 Évaluation critique
 
 | Avantage | Limite |
@@ -267,7 +271,7 @@ La méthode du coude suggère `k = 6`, mais la courbe décroît faiblement à pa
 
 ### 5.3 Résultats comparés selon k
 
-#### K = 6 — Clusters déséquilibrés
+#### K = 6 — Clusters déséquilibrés — Logan
 
 | Thème identifié | Effectif |
 |---|---|
@@ -280,7 +284,7 @@ La méthode du coude suggère `k = 6`, mais la courbe décroît faiblement à pa
 
 > ⚠️ Résultat insuffisant : fort déséquilibre de taille (46 vs 1718), thèmes qui se recoupent.
 
-#### K = 5 — Clusters partiellement pertinents
+#### K = 5 — Clusters partiellement pertinents — Emin
 
 ```
 years - told - sex - time - back - child
@@ -290,9 +294,9 @@ decide - client - counselor - end - terminate - working
 counseling - address - history - many - issues - process
 ```
 
-> Meilleur que K=6, mais un cluster contient des mots peu informatifs, et les deux derniers sont trop similaires.
+> Un cluster contient des mots peu informatifs, et les deux derniers sont trop similaires.
 
-#### K = 4 — Clusters trop vagues
+#### K = 4 — Clusters trop vagues — Victor
 
 ```
 know, want, dont, years, get, relationship, sex, told, time, love
@@ -309,14 +313,15 @@ En appliquant une **décomposition LSA** (Latent Semantic Analysis via SVD) sur 
 
 ```python
 vec = TfidfVectorizer(
-    max_features=10000,
-    ngram_range=(1, 3),    # unigrammes, bigrammes et trigrammes
-    min_df=3,              # ignore les mots trop rares
-    max_df=0.5,            # ignore les mots trop fréquents
-    sublinear_tf=True,     # normalisation logarithmique
-    stop_words=list(STOPWORDS),
-    strip_accents="unicode",
-    token_pattern=r"(?u)\b[a-zA-Z]{2,}\b"
+    max_features=10000,                     # limite aux 10000 termes les plus fréquents  
+    ngram_range=(1, 3),                     # unigrammes, bigrammes et trigrammes
+    min_df=3,                               # ignore les mots trop rares
+    max_df=0.5,                             # ignore les mots trop fréquents
+    sublinear_tf=True,                      # normalisation logarithmique
+    stop_words=list(STOPWORDS),             # retire une liste de mots supplémentaire
+    strip_accents="unicode",                # normalise les accents (é -> e, à -> a etc.)
+    token_pattern=r"(?u)\b[a-zA-Z]{2,}\b"   # ne conserve que les séquence alphabétique d'au moins
+                                            #   2 caractères
 )
 ```
 
@@ -341,12 +346,13 @@ vec = TfidfVectorizer(
 ---
 
 ## 6. Topic Modeling — Méthode 3 : Word Embeddings
+Le Word Embedding (plongement lexical) est une **représentation sémantique des mots** sous forme de **vecteurs** de nombres réels. Deux mots de sens proches ont des vecteurs proches dans l'espace méthématique.  
 
 Trois approches de word embeddings ont été testées et comparées.
 
 ### 6.1 Word2Vec (Skip-gram) — Logan
-
-Word2Vec apprend des représentations vectorielles à partir du **contexte local** de chaque mot. Le mode **Skip-gram** (prédit le contexte à partir d'un mot) est préféré au CBOW (prédit un mot depuis son contexte) car notre corpus est **petit et spécialisé** : Skip-gram est plus performant dans ce cas.
+Contrairement à TF_IDF qui est une représentation statistique (fréquence d'apparition), Word2Vec est une représentation sémantique, il apprend des représentations vectorielles à partir du **contexte local** de chaque mot (par exemple *sad* et *depressed* se trouvent proches dans l'espace vectoriel parce qu'il apparaissent dans des contextes similaires).  
+Le mode **Skip-gram** (prédit le contexte à partir d'un mot) est préféré au **CBOW** (prédit un mot depuis son contexte) car notre corpus est **petit et spécialisé** : Skip-gram est plus performant dans ce cas.
 
 ```python
 model = Word2Vec(
@@ -354,12 +360,14 @@ model = Word2Vec(
     vector_size=100,   # dimensions des vecteurs
     window=5,          # contexte de 5 mots de chaque côté
     min_count=3,       # ignore les mots apparaissant < 3 fois
-    workers=4,
-    epochs=10,
-    seed=42,
+    workers=4,         # calcul parallèle sur 4 threads
+    epochs=10,         # indique 10 passages complet sur le corpus
+    seed=42,           # permet de reproduire le résultat
     sg=1               # Skip-gram (0 = CBOW)
 )
 ```
+> Il est important de préciser que le paramètre ```epoch``` ne doit pas être trop grand, cela augmanterais le risque de **surapprentissage** sur un corpus petit comme le notre.
+
 
 **Résultats avec K = 6 (patients) :**
 
@@ -540,5 +548,3 @@ Aucune méthode n'est universellement supérieure. Elles sont **complémentaires
 5. **Sélection du nombre de clusters** : existe-t-il une méthode plus robuste que la méthode du coude pour déterminer automatiquement `k` optimal ?
 
 ---
-
-*Document rédigé à l'issue de l'étape 1. À mettre à jour lors du bilan de mi-parcours (prévu le 20 avril 2026).*
