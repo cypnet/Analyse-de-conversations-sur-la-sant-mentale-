@@ -11,6 +11,7 @@
 \usepackage{setspace}
 \usepackage[stable]{footmisc}
 \onehalfspacing
+\usepackage{pdflscape}
 
 % ── Typographie ────────────────────────────────────────────────────────────────
 \usepackage{lmodern}
@@ -19,16 +20,8 @@
 % ── Mathématiques ──────────────────────────────────────────────────────────────
 \usepackage{amsmath, amssymb}
 
-% ── Progressbar ────────────────────────────────────────────────────────────────
-% \usepackage[draft]{progress}
-
-% \renewcommand{\ProgressDocOutput}[1]{%
-%     \color{blue!70!black}%
-%     \vspace{-10pt}%
-%     \ProgressDrawBar{#1}\par%
-%     \vspace{10pt}%
-% }
-% \ProgressGfxXSize=\numexpr\linewidth/\ProgressGfxUnitSize\relax
+% ── pgfgantt ────────────────────────────────────────────────────────────────
+\usepackage{pgfgantt}
 
 % ── Tableaux ───────────────────────────────────────────────────────────────────
 \usepackage{booktabs}
@@ -78,6 +71,7 @@
 
 % ── Hyperliens ─────────────────────────────────────────────────────────────────
 \usepackage[colorlinks=true, linkcolor=blue!70!black, urlcolor=blue!70!black]{hyperref}
+\usepackage{bookmark}
 
 % ── En-têtes / pieds de page ───────────────────────────────────────────────────
 \usepackage{fancyhdr}
@@ -247,30 +241,79 @@ Ce document est un bilan mi-parcours de notre projet, dans lequel nous présento
 \begin{center}
 \begin{tikzpicture}[scale=1.5]
 
-% Paramètre : étape actuelle
-\def\currentstep{2}
+% ======================
+% PARAMÈTRES
+% ======================
+\def\currentstep{1}
+\def\groupA{0.0}
+\def\groupB{0.0}
 
-% Couleurs
+% ======================
+% COULEURS
+% ======================
 \definecolor{done}{RGB}{76,175,80}
 \definecolor{current}{RGB}{255,165,0}
 \definecolor{todo}{RGB}{200,200,200}
 
-% Ligne de fond
-\draw[line width=3pt, color=todo] (0,0) -- (6,0);
+% ======================
+% BARRE PRINCIPALE
+% ======================
+\draw[line width=3pt, color=todo] (0,0) -- (4,0);
 
-% Progression (remplissage de l'étape en cours)
-\draw[line width=3pt, color=current] ({2*(\currentstep-1)},0) -- ({2*(\currentstep)},0);
+% progression réelle (FIN étape 1 uniquement)
+\draw[line width=3pt, color=done] (0,0) -- (2.5,0);
 
-% Progression (remplissage)
-\draw[line width=3pt, color=done] (0,0) -- ({2*(\currentstep-1)+0.5},0);
+% étape en cours (étape 2)
+\draw[line width=3pt, color=current] (2.5,0) -- (3,0);
 
-
-% Crans tous les 25%
-\foreach \x in {0,0.5,...,6} {
+% ======================
+% CRANS
+% ======================
+\foreach \x in {0,0.5,...,4} {
     \draw[line width=1pt] (\x,0.05) -- (\x,-0.05);
 }
 
-% Étapes (points + labels)
+% ======================
+% BIFURCATION FLUIDE À PARTIR DE 4
+% ======================
+\coordinate (split) at (4,0);
+
+% branches (fond)
+\draw[line width=3pt, color=todo]
+  (split) to[out=-10, in=180] (5,0.6);
+
+\draw[line width=3pt, color=todo]
+  (split) to[out=10, in=180] (5,-0.6);
+
+% progression groupe A
+\path (split) to[out=-10, in=180] coordinate[pos=\groupA] (Aprog) (5,0.6);
+\draw[line width=3pt, color=done]
+  (split) to[out=-10, in=180] (Aprog);
+
+% état courant groupe A
+\ifdim \groupA pt > 0pt
+\ifdim \groupA pt < 1pt
+  \draw[line width=3pt, color=current]
+    (Aprog) to[out=-10, in=180] ++(0.15,0.08);
+\fi
+\fi
+
+% progression groupe B
+\path (split) to[out=10, in=180] coordinate[pos=\groupB] (Bprog) (5,-0.6);
+\draw[line width=3pt, color=done]
+  (split) to[out=10, in=180] (Bprog);
+
+% état courant groupe B
+\ifdim \groupB pt > 0pt
+\ifdim \groupB pt < 1pt
+  \draw[line width=3pt, color=current]
+    (Bprog) to[out=10, in=180] ++(0.15,-0.08);
+\fi
+\fi
+
+% ======================
+% POINTS ÉTAPES
+% ======================
 \foreach \x/\label/\step in {
   0/Étape 1/1,
   2.5/Étape 2/2,
@@ -280,12 +323,23 @@ Ce document est un bilan mi-parcours de notre projet, dans lequel nous présento
     \filldraw[fill=done, draw=black] (\x,0) circle (0.15);
   \else\ifnum\step=\currentstep
     \filldraw[fill=current, draw=black] (\x,0) circle (0.15);
+  \else\ifnum\step=\currentstep
+    \filldraw[fill=done, draw=black] (\x,0) circle (0.15);
   \else
     \filldraw[fill=white, draw=black] (\x,0) circle (0.15);
-  \fi\fi
+  \fi\fi\fi
 
   \node[below=6pt] at (\x,0) {\label};
 }
+
+% ======================
+% POINTS GROUPES
+% ======================
+\filldraw[fill=white, draw=black] (5,0.6) circle (0.12);
+\node[right] at (5.2,0.75) {Groupe A};
+
+\filldraw[fill=white, draw=black] (5,-0.6) circle (0.12);
+\node[right] at (5.2,-0.75) {Groupe B};
 
 \end{tikzpicture}
 \caption{\centering\small Structure du projet et progression actuelle}
@@ -338,17 +392,17 @@ Ces réunions sont séparés en deux catégories:
 
 \subsection{Réunions d'équipe}
 
-\subsubsection{Première réunion d'équipe (\textbf{TODO DATE ICI})}
+\subsubsection{Première réunion d'équipe (06/03/2026)}
 À ce jour, nous avons réalisé quatre réunions d'équipes internes, la première étant une réunion de \textit{branstorming} 
 pour définir les objectifs du projet et répartir les tâches entre les membres de l'équipe. 
 Cepandant, cela ne nous a pas empêché de communiquer avec notre référente via mail pour lui poser des questions sur le projet et sur les attentes de celui-ci.
 
-\subsubsection{Seconde réunion d'équipe (\textbf{TODO DATE ICI})}
+\subsubsection{Seconde réunion d'équipe (12/03/2026)}
 La suivante est une réunion de mise en place officielle du plan, elle fait suite à la première et nous avons pu définir une structure pour notre projet,
 ainsi que les différentes étapes à suivre pour atteindre nos objectifs. C'est à partir ce celle là que le cahier des charges
 a été rédigé et partagé avec l'ensemble de l'équipe et notre encadrante.
 
-\subsubsection{Troisième et Quatrième réunion d'équipe (\textbf{TODO DATE ICI})}
+\subsubsection{Troisième et Quatrième réunion d'équipe (29/03/2026 et 12/04/2026)}
 Les deux dernières réunions d'équipe ont été consacrées à faire le point sur l'avancée du projet, 
 à discuter des problèmes rencontrés et à planifier les prochaines tâches à réaliser.
 Ses deux dernière réunions était plus ciblés sur l'aspect technique du projet, la troisième réunion nous à permis de clarifier
@@ -361,16 +415,16 @@ mais ormis notre amélioration en tant que groupe, nous avons rencontrés beauco
 
 \subsection{Réunion d'équipe avec Référente}
 Étant à un rythme moins régulier, nous avons eu à ce jour trois rendez-vous avec notre référente, Madame Lynda Tamine-Lechani.
-\subsubsection{Première réunion (\textbf{TOTO DATE ICI})}
+\subsubsection{Première réunion (27/02/2026)}
 Le premier rendez-vous était une réunion de présentation, notre référente nous a présenté le projet, les attentes de celui-ci et
 une légère vue d'ensemble que nous devions par la suite approfondir par nous même.\smallbreak
 
-\subsubsection{Seconde réunion (\textbf{TOTO DATE ICI})}
+\subsubsection{Seconde réunion (03/04/2026)}
 Le second rendez-vous était une mise au point sur l'avancée du projet, nous avons pu discuter des soucis rencontrés par certains membres de l'équipe, 
 et nous avons pu recevoir des conseils pour améliorer notre travail et sur ce qu'il était attendu de nous pour les prochaines réunions d'équipe avec notre référente
 en particulier un compte-rendu technique détaillé de notre travail à présenter lors des prochaines réunions avec elle.
 
-\subsubsection{Troisième réunion (\textbf{TOTO DATE ICI})}
+\subsubsection{Troisième réunion (14/04/2026)}\label{subsubsec:reu3}
 La troisième réunion étant la plus récente à ce jour, est la plus abouti en terme de travail.
 Nous avons pu présenter notre travail à notre référente sous la fomre d'un compte-rendu technique résumant les résultats obtenus et les techniques utilisées.
 Cela nous a permis derecevoir des feedbacks constructifs pour améliorer notre travail et orienter nos prochaines étapes.
@@ -391,33 +445,249 @@ Ses questions (avec contexte) pouvant être plus ou moins techniques étaient pa
 
 
 \pagebreak
-% ── Problèmes rencontrés ────────────────────────────────────────────────────────
-\section{Problèmes rencontrés}\label{sec:problems}
+
+
+% ── Problèmes rencontrés et solutions apportées ─────────────────────────────────
+\section{Problèmes rencontrés et solutions apportées}\label{sec:problems}
 Comme dans tout projet, nous avons rencontré plusieurs problèmes au cours de notre travail,
 que ce soit au niveau de la méthodologie, de la communication ou de l'organisation du travail en équipe.\\
-Voici une liste non exhaustive des problèmes que nous avons rencontrés jusqu'à présent:
-\begin{itemize}
-  \item \textbf{Problèmes de méthodologie:} Nous avons eu du mal à définir une méthodologie claire pour notre projet, 
-  ce qui a entraîné des confusions et des retards dans notre travail. Nous avons dû revoir notre méthodologie plusieurs
-\end{itemize}
+Voici une liste non exhaustive des problèmes rencontrés et des solutions que nous avons apportées pour les résoudre.
+\subsection{Problèmes d'organisation}
+\subsubsection{Membre d'équipe arrivé en décalé}
+La dernière personne du groupe a rejoint le projet une semaine après 
+le lancement car il n'a pas pu être présent à la première réunion. \smallbreak
+\hspace{0.5cm}\textbf{Solution apportée:} Cela aurait pu causer des problèmes d'organisation et de communication au sein de l'équipe 
+mais nous avons réussi à intégrer cette personne rapidement en lui partageant les documents de travail et en lui expliquant 
+les tâches déjà réalisées, ainsi que les tâches à venir pour qu'elle puisse s'intégrer au mieux dans le projet.
+\subsubsection{Organisation des réunions}
+Lors de l'initialisation du projet, nous avons mis beaucoup trop de temps à organiser un rythme de réunions régulier
+avec la référente, en supposant que le choix serait fait de son côté, ce qui n'était pas le cas. \smallbreak
+\hspace{0.5cm}\textbf{Solution apportée:} Nous avons réagit sur ce problème en organisant nous même les réunions
+avec la référente en lui proposant des dates qui convenait à (quasiment) tout les membres de l'équipes. 
+\subsubsection{Contrainte des membres de l'équipe pour les réunions}
+Venant de groupes de matières différents, le problème a été de trouver des créneaux horaires qui convenaient 
+à tout le monde pour les réunions d'équipe avec et sans la référente. \smallbreak
+\hspace{0.5cm}\textbf{Solution apportée:} Nous avons réalisé des sondages pour déterminer une date et une heure qui convenait à une grande majorité de l'équipe.
+La quasi totalité préférant le présentiel, nous avont opté pour des réunions en hybride (présentielle et distancielle via \textit{Discord}).
+Pour ce qui est des personnes ne pouvant pas y assister, nous metton en place un compte-rendu permettant de résumer le contenue de la réunion.
+
+%--------------------------------------------
+\subsection{Problèmes méthodologique}
+
+\hspace{0.5cm}\textbf{Solution apportée:}
+\subsubsection{Mauvaise compréhension des consignes}
+Lors de notre troisième réunion organisée avec la référente (voir section \ref{subsubsec:reu3}.\nameref{subsubsec:reu3}),
+nous avons fait la constatation que le travail à réaliser pour l'étape 1 n'était pas entièrement individuelle mais supposé être faites en 2 sous-groupes 
+de 5 personnes se répartissant les tâches à réaliser pour ensuite comparer les résultats obtenus.\\
+Notre méthodes est tout à fait fonctionnelle mais peut efficace, ne corespondant pas à ce qui était attendu par la référente.
+Cela a pu causer des problèmes de qualité du travail réalisé, car celui-ci était bien plus demandant en terme de charge de travail. \smallbreak 
+
+\hspace{0.5cm}\textbf{Solution apportée:} L'étape 1 étant terminée avec ces contraintes, nous avons pu apprendre de nos
+erreurs et donc pour l'étape 2 nous allons réaliser un organisation beaucoup plus stratégique en repartissant 
+les tâches en deux groupes de 5 personnes, ses deux groupes seront les mêmes que ceux établis pour l'étape 3. 
+
+\subsubsection{Résultats de l'étape 1 impactant l'étape 2}
+Pour contexte, lors de l'étape 1, nous avons pu réaliser la modélisation de sujet (\text{topic modeling}) 
+pour extraire les thèmes principaux des conversations, ce qui nous a permis d'identifier les sujets les plus 
+fréquemment abordés par les patients et les thérapeutes. 
+Cependant, les résultats obtenus lors de cette étape sont très importants pour la suite du projet, 
+en particulier pour l'étape 2 qui consiste à faire une analyse de sentiments sur les conversations. 
+Si chaque membre de l'équipe se base sur son propre modèle, les résultat seront beaucoup trop différents
+et possiblement non-comparables.\smallbreak
+Un problème qui n'est pas encore arrivé mais extrèmement probable si nous ne réagissons pas à temps.
+
+\hspace{0.5cm}\textbf{Solution apportée:} Le but est de définir une méthode de topic modeling commune à tous les membres 
+de l'équipe pour que les résultats soient comparables et cohérents, ce qui nous permettra d'avoir une analyse 
+de sentiments plus précise et pertinente pour la suite du projet.\\
+Ce choix sera fait sur la base d'un vote des membres de l'équipe après avoir comparé les résultats de chacun sur chaque méthodes qu'ils ont pu faire.
+%--------------------------------------------
+\subsubsection{Problème 3}
+
+\hspace{0.5cm}\textbf{Solution apportée:}
+
+%--------------------------------------------
+\subsection{Problèmes techniques}
+\subsubsection{Problème 1}
+
+\hspace{0.5cm}\textbf{Solution apportée:}
+
+\subsubsection{Problème 2}
+
+\hspace{0.5cm}\textbf{Solution apportée:}
+
+% ── Mise à jour du planning ───────────────────────────────────────────────────
 
 \pagebreak
-% ── Solutions apportées ─────────────────────────────────────────────────────────
-\section{Solutions apportées}
+
+\section{Mise à jour du planning}
+Nous avons pu constater que la première partie de ce projet nous a engendré certains problèmes, 
+ce qui a bien entendu impacté notre planning initial, 
+mais nous avons réagit à temps pour corriger nos erreur et nous avons pu réinitialiser un nouveau planning pour la suite du projet,
+qui nous permettra d'atteindre nos objectifs dans les temps.\\
+
+\begin{figure}[H]
+\resizebox{\textwidth}{!}{% force à tenir sur la largeur de la page
+\begin{ganttchart}[
+    hgrid,
+    vgrid,
+    time slot format=isodate,
+    x unit=0.45cm, % Ajuste la largeur du planning
+    y unit chart=0.8cm,
+    bar/.append style={fill=blue!40},
+    bar height=0.6,
+    label node/.append style={
+        text width=4cm,
+        align=left
+    }
+]{2026-03-09}{2026-05-29}
+
+% En-tête
+\gantttitlecalendar{year, month=name, week} \\
+
+% Tâches
+\ganttbar{Nettoyage des données}{2026-03-09}{2026-03-09} \\
+\ganttbar{Analyse Statistique}{2026-03-10}{2026-03-15} \\
+\ganttbar{Analyse Lexicale}{2026-03-16}{2026-03-18} \\
+\ganttbar{Filtrage manuel}{2026-03-19}{2026-03-19} \\
+\ganttbar{Vectorisation TF-IDF}{2026-03-20}{2026-03-22} \\
+\ganttbar{Word embeddings}{2026-03-23}{2026-03-25} \\
+\ganttbar{Modèle LDA}{2026-03-26}{2026-03-28} \\
+\ganttbar{Étape 2}{2026-03-29}{2026-04-11} \\
+\ganttbar{Étape 3}{2026-04-12}{2026-05-29}
+
+\end{ganttchart}
+}
+\caption{\centering\small Planning Gantt initial}
+\end{figure}
+
+\begin{figure}[H]
+\resizebox{\textwidth}{!}{% force à tenir sur la largeur de la page
+\begin{ganttchart}[
+    hgrid,
+    vgrid,
+    time slot format=isodate,
+    x unit=0.45cm, % Ajuste la largeur du planning
+    y unit chart=0.8cm,
+    bar/.append style={fill=blue!40},
+    bar height=0.6,
+    label node/.append style={
+        text width=4cm,
+        align=left
+    }
+]{2026-03-09}{2026-05-29}
+
+% En-tête
+\gantttitlecalendar{year, month=name, week} \\
+
+% Tâches
+\ganttbar{Nettoyage des données}{2026-03-09}{2026-03-09} \\
+\ganttbar{Analyse Statistique}{2026-03-10}{2026-03-15} \\
+\ganttbar{Analyse Lexicale}{2026-03-16}{2026-03-18} \\
+\ganttbar{Filtrage manuel}{2026-03-19}{2026-03-19} \\
+\ganttbar{Vectorisation TF-IDF}{2026-03-20}{2026-03-22} \\
+\ganttbar{Word embeddings}{2026-03-23}{2026-03-25} \\
+\ganttbar{Modèle LDA}{2026-03-26}{2026-03-28} \\
+\ganttbar{Étape 2}{2026-03-29}{2026-04-11} \\
+\ganttbar{Étape 3}{2026-04-12}{2026-05-29}
+
+\end{ganttchart}
+}
+\caption{\centering\small Planning Gantt \textbf{mis à jour}}
+\end{figure}
+
+Les plannings étant relativement grand, ont étaient mis en Annexe (\ref{subsec:annexeGantt}.\nameref{subsec:annexeGantt}) sous format paysage.
 
 \pagebreak
 % ── Suite du projet ─────────────────────────────────────────────────────────────
 \section{Suite du projet}
 
+Le future du projet est principalement axé sur l'étape 2 et 3 du projet, qui conciste à analyser les sentiments 
+des conversations et à accéder aux conversations pour faire du résumé et du Q/A sur la santé mentale.
+
+L'étape 2 sera (normallement) plus courte que la première puisqu'elle conciste à utiliser les résultats des modèles de l'étape précédente pour
+faire une analyse de sentiments sur les conversations, ce qui nous permettra d'identifier les émotions exprimées par les patients et les thérapeutes,
+ainsi que les facteurs qui influencent ces émotions.
+
+Le but étant d'accomplir cette étape dans les temps pour pouvoir se stabiliser sur le nouveau planning initialisé lors de l'étape 1.
+
+
+\pagebreak
 
 
 
 
+\section{Annexes}\label{sec:annexe}
+\begin{landscape}
+\subsection{Diagramme de Gantt}\label{subsec:annexeGantt}
+\begin{figure}[H]
+\resizebox{680pt}{!}{% force à tenir sur la largeur de la page
+\begin{ganttchart}[
+    hgrid,
+    vgrid,
+    time slot format=isodate,
+    x unit=0.45cm, % Ajuste la largeur du planning
+    y unit chart=0.8cm,
+    bar/.append style={fill=blue!40},
+    bar height=0.6,
+    label node/.append style={
+        text width=4cm,
+        align=left
+    }
+]{2026-03-09}{2026-05-29}
 
+% En-tête
+\gantttitlecalendar{year, month=name, week} \\
 
+% Tâches
+\ganttbar{Nettoyage des données}{2026-03-09}{2026-03-09} \\
+\ganttbar{Analyse Statistique}{2026-03-10}{2026-03-15} \\
+\ganttbar{Analyse Lexicale}{2026-03-16}{2026-03-18} \\
+\ganttbar{Filtrage manuel}{2026-03-19}{2026-03-19} \\
+\ganttbar{Vectorisation TF-IDF}{2026-03-20}{2026-03-22} \\
+\ganttbar{Word embeddings}{2026-03-23}{2026-03-25} \\
+\ganttbar{Modèle LDA}{2026-03-26}{2026-03-28} \\
+\ganttbar{Étape 2}{2026-03-29}{2026-04-11} \\
+\ganttbar{Étape 3}{2026-04-12}{2026-05-29}
 
+\end{ganttchart}
+}
+\caption{\centering\small Planning Gantt initial}
+\end{figure}
 
+\begin{figure}[H]
+\resizebox{680pt}{!}{% force à tenir sur la largeur de la page
+\begin{ganttchart}[
+    hgrid,
+    vgrid,
+    time slot format=isodate,
+    x unit=0.45cm, % Ajuste la largeur du planning
+    y unit chart=0.8cm,
+    bar/.append style={fill=blue!40},
+    bar height=0.6,
+    label node/.append style={
+        text width=4cm,
+        align=left
+    }
+]{2026-03-09}{2026-05-29}
 
+% En-tête
+\gantttitlecalendar{year, month=name, week} \\
 
+% Tâches
+\ganttbar{Nettoyage des données}{2026-03-09}{2026-03-09} \\
+\ganttbar{Analyse Statistique}{2026-03-10}{2026-03-15} \\
+\ganttbar{Analyse Lexicale}{2026-03-16}{2026-03-18} \\
+\ganttbar{Filtrage manuel}{2026-03-19}{2026-03-19} \\
+\ganttbar{Vectorisation TF-IDF}{2026-03-20}{2026-03-22} \\
+\ganttbar{Word embeddings}{2026-03-23}{2026-03-25} \\
+\ganttbar{Modèle LDA}{2026-03-26}{2026-03-28} \\
+\ganttbar{Étape 2}{2026-03-29}{2026-04-11} \\
+\ganttbar{Étape 3}{2026-04-12}{2026-05-29}
+
+\end{ganttchart}
+}
+\caption{\centering\small Planning Gantt \textbf{mis à jour}}
+\end{figure}
+\end{landscape}
 
 \end{document}
