@@ -19,6 +19,17 @@
 % ── Mathématiques ──────────────────────────────────────────────────────────────
 \usepackage{amsmath, amssymb}
 
+% ── Progressbar ────────────────────────────────────────────────────────────────
+% \usepackage[draft]{progress}
+
+% \renewcommand{\ProgressDocOutput}[1]{%
+%     \color{blue!70!black}%
+%     \vspace{-10pt}%
+%     \ProgressDrawBar{#1}\par%
+%     \vspace{10pt}%
+% }
+% \ProgressGfxXSize=\numexpr\linewidth/\ProgressGfxUnitSize\relax
+
 % ── Tableaux ───────────────────────────────────────────────────────────────────
 \usepackage{booktabs}
 \usepackage{tabularx}
@@ -36,6 +47,7 @@
 
 % ── wrapfigure ─────────────────────────────────────────────────────────────────
 \usepackage{wrapfig}
+\usepackage{float}
 
 % ── Code source ────────────────────────────────────────────────────────────────
 \usepackage{listings}
@@ -147,9 +159,12 @@ Ce document est un bilan mi-parcours de notre projet, dans lequel nous présento
 
 \section{Avancée du projet}
 
-\begin{figure}[htbp]
-\centering
+
+\begin{figure}[H]
+\begin{center}
 \begin{tikzpicture}[
+  scale=0.85,
+  transform shape,
   node distance=8mm,
   >=Latex,
   box/.style={rounded corners, draw=blue!70!black, thick, fill=blue!5, align=center, text width=2.2cm, minimum height=0.9cm, inner sep=3pt, font=\small},
@@ -166,9 +181,9 @@ Ce document est un bilan mi-parcours de notre projet, dans lequel nous présento
   \node[box, below=of stats] (lex) {Analyse\\lexicale};
   \node[box, below=of lex] (topic) {Topic\\Modeling};
 
-  \node[box, below=2cm of topic, text width=3cm] (sentiment) {Analyse sentiments\\conversations};
+  \node[box, below=3cm of topic, text width=4cm] (sentiment) {Analyse sentiments\\conversations};
 
-  \node[box, below=2cm of sentiment, text width=3cm] (conversations) {Accès aux conversations};
+  \node[box, below=3cm of sentiment, text width=3cm] (conversations) {Accès aux conversations};
   \node[box, left=1cm of conversations, text width=3cm] (conversationG1) {Résumé des conversations};
   \node[box, right=1cm of conversations, text width=3cm] (conversationG2) {Q/A sur la santé mentale};
 
@@ -199,13 +214,9 @@ Ce document est un bilan mi-parcours de notre projet, dans lequel nous présento
   % décaler le groupe entier vers la gauche
   \node[group, fit=(tm1) (tm2) (tm3) (tm4), label=above:\small\textbf{Comparaison des méthodes}] (methods4) {};
 
-  \node[biggergroup, fit=(methods1) (methods2) (methods3) (methods4) (topic), label=below left:\small\textbf{Étape 1}] (step1) {};
-  \node[biggergroup, fit=(sentiment), label=below left:\small\textbf{Étape 2}] (step2) {};
-  \node[biggergroup, fit=(conversations) (conversationG1) (conversationG2), label=below left:\small\textbf{Étape 3}] (step3) {};
-  
-  % Grille de flèches
-  % --- Flèches de sortie ---
-  % \draw[arrow] (topic.south) -- ++(0,-0.5) node[below] {\small Thèmes extraits};
+  \node[biggergroup, fit=(methods1) (methods2) (methods3) (methods4) (topic), label=above left:\small\textbf{Étape 1}] (step1) {};
+  \node[biggergroup, fit=(sentiment), label=above left:\small\textbf{Étape 2}] (step2) {};
+  \node[biggergroup, fit=(conversations) (conversationG1) (conversationG2), label=above left:\small\textbf{Étape 3}] (step3) {};
 
   % Flux principal horizontal
   \draw[arrow] (data) -- (clean);
@@ -226,10 +237,58 @@ Ce document est un bilan mi-parcours de notre projet, dans lequel nous présento
   \draw[arrow] (lex.west) -- (methods3.east);
   \draw[arrow] (topic.east) -- ++(0.4,0) -- ++(0, -0.3) -| (methods4.south);
 
-\end{tikzpicture}
-\caption{\centering Vue d'ensemble du travail réalisé à ce jour.}
+\end{tikzpicture}%
 \label{fig:flowchart-etape1}
+\end{center}
 \end{figure}
+
+% Barre
+\begin{figure}[H]
+\begin{center}
+\begin{tikzpicture}[scale=1.5]
+
+% Paramètre : étape actuelle
+\def\currentstep{2}
+
+% Couleurs
+\definecolor{done}{RGB}{76,175,80}
+\definecolor{current}{RGB}{255,165,0}
+\definecolor{todo}{RGB}{200,200,200}
+
+% Ligne de fond
+\draw[line width=3pt, color=todo] (0,0) -- (6,0);
+
+% Progression (remplissage)
+\draw[line width=3pt, color=done] (0,0) -- ({2*(\currentstep-1)},0);
+
+% Crans tous les 25%
+\foreach \x in {0,0.5,...,6} {
+    \draw[line width=1pt] (\x,0.05) -- (\x,-0.05);
+}
+
+% Étapes (points + labels)
+\foreach \x/\label/\step in {
+  0/Étape 1/1,
+  2/Étape 2/2,
+  4/Étape 3/3
+} {
+  \ifnum\step<\currentstep
+    \filldraw[fill=done, draw=black] (\x,0) circle (0.15);
+  \else\ifnum\step=\currentstep
+    \filldraw[fill=current, draw=black] (\x,0) circle (0.15);
+  \else
+    \filldraw[fill=white, draw=black] (\x,0) circle (0.15);
+  \fi\fi
+
+  \node[below=6pt] at (\x,0) {\label};
+}
+
+\end{tikzpicture}
+\caption{\centering\small Structure du projet et progression actuelle}
+\end{center}
+\end{figure}
+
+\pagebreak
 
 % ── Rapport des réunions ────────────────────────────────────────────────────────
 \section{Rapport de réunions}

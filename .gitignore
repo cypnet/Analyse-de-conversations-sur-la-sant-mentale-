@@ -13,6 +13,7 @@ __pycache__/
 *.synctex.gz
 *.fls
 *.fdb_latexmk
+*.html
 
 # Dossiers générés par Jupyter
 .ipynb_checkpoints/
