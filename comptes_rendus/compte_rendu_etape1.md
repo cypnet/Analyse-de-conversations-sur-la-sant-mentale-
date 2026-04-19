@@ -446,7 +446,27 @@ LDA (*Latent Dirichlet Allocation*) est un modèle probabiliste génératif. Con
 - LDA identifie des groupes de mots qui **co-apparaissent** fréquemment
 - Elle associe ensuite à chaque document une **probabilité d'appartenance** à chaque topic
 
+```mermaid
+flowchart LR
+A[Conversation:
+feel anxious panic sleep
+nightmare relationship
+lonely therapy help cope
+stress worry fear family support] --> B(LDA 
+Modèle probabiliste)
+B --> C(mélange de thèmes)
+C -->|"45%"| D[Anxiété]
+C -->|"30%"| E[Sommeil]
+C -->|"25%"| F[Relations]
+```
+
+> En sortie, on aura **deux tableaux de probabilités**: un premier qui définit quels mots caractérisent chaque thèmes (distribution sur le **vocabulaire**) et un second qui définit
+dans quelle proportion chaque conversation aborde chaque thème (distribution sur les **thèmes**)
+
 ```python
+N_TOPICS = 6
+PASSES = 15
+
 model = LdaModel(
     corpus=corpus,          # corpus au format Bag-of-Words
     id2word=dictionary,     # mapping id -> mot
@@ -455,6 +475,8 @@ model = LdaModel(
     passes=passes           # passes sur le corpus pour la convergence
 )
 ```
+
+> **Note sur le chevauchement des topics** : des mots comme `relationship` ou `boyfriend` apparaissent dans plusieurs topics. Ce n'est pas nécessairement un défaut — LDA tolère cette ambiguïté par conception. Le sens du mot est précisé par les autres mots du topic. Par exemple, `relationship` peut désigner une relation familiale (avec `dad`, `child`) ou amoureuse (avec `boyfriend`, `love`).
 
 ### 7.2 Résultats comparés
 
@@ -469,6 +491,8 @@ model = LdaModel(
 | Détresse émotionnelle et conflits personnels | thought, boyfriend, girl, life, have, stop, cry, month |
 | Thérapie et problématiques de couple | normal, issue, wife, therapy, walk, voice, couple, self |
 
+> ✅ Résultats relativement bons, bonne distinctions entre trois types de relations différentes
+
 #### Résultats à 6 topics — Diogo
 
 | Thème | Mots représentatifs |
@@ -480,6 +504,8 @@ model = LdaModel(
 | Intrusive thoughts and past | mother, mom, dad, son, child |
 | Family anger and conflict | therapist, money, phone, relationship, friends |
 
+> ✅ Résultats différents que ceux de Logan mais tout aussi bien, ormis des résidus de mot vide comme *shes* et *hes* (contraction de *she's* et *he's* passé à travers les mailles du fillet lors du pré-traitement section [Analyse statistique](#2-analyse-statistique)) on apperçoit les différents types de relations.
+
 #### Résultats à 5 topics — Lucas
 
 | Thème | Mots représentatifs |
@@ -490,7 +516,8 @@ model = LdaModel(
 | Détresse émotionnelle et pensées négatives | bad, think, sex, relationship, afraid, help, thoughts, love, stop |
 | Relations de couple, vie familiale et évolution personnelle | boyfriend, make, counseling, live, child, life, people, talk, relationship |
 
-> **Note sur le chevauchement des topics** : des mots comme `relationship` ou `boyfriend` apparaissent dans plusieurs topics. Ce n'est pas nécessairement un défaut — LDA tolère cette ambiguïté par conception. Le sens du mot est précisé par les autres mots du topic. Par exemple, `relationship` peut désigner une relation familiale (avec `dad`, `child`) ou amoureuse (avec `boyfriend`, `love`).
+> ⚠️ Beaucoup plus de mots sans aucunes significations impactantes comme *think*, *say* ou bien *past* (ce qui semble logique puisque Lucas n'a pas ajouté son propre dictionnaire personnalisé).  
+La réduction du nombre de topics à 5 a impacté la diversité des thèmes.
 
 ### 7.3 Évaluation critique
 
@@ -525,7 +552,7 @@ Aucune méthode n'est universellement supérieure. Elles sont **complémentaires
 
 ## 9. Problèmes rencontrés et questions ouvertes
 
-### 9.1 Problèmes identifiés
+### 9.1 Problèmes techniques identifiés
 
 | Problème | Description | Impact |
 |---|---|---|
