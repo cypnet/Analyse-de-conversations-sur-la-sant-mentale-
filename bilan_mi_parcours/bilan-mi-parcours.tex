@@ -244,7 +244,7 @@ Ce document est un bilan mi-parcours de notre projet, dans lequel nous présento
 % ======================
 % PARAMÈTRES
 % ======================
-\def\currentstep{1}
+\def\currentstep{2} % Étape actuelle (1, 2 ou 3)
 \def\groupA{0.0}
 \def\groupB{0.0}
 
@@ -419,12 +419,12 @@ mais ormis notre amélioration en tant que groupe, nous avons rencontrés beauco
 Le premier rendez-vous était une réunion de présentation, notre référente nous a présenté le projet, les attentes de celui-ci et
 une légère vue d'ensemble que nous devions par la suite approfondir par nous même.\smallbreak
 
-\subsubsection{Seconde réunion (03/04/2026)}
+\subsubsection{Seconde réunion (03/04/2026)}\label{subsubsec:reuRef2}
 Le second rendez-vous était une mise au point sur l'avancée du projet, nous avons pu discuter des soucis rencontrés par certains membres de l'équipe, 
 et nous avons pu recevoir des conseils pour améliorer notre travail et sur ce qu'il était attendu de nous pour les prochaines réunions d'équipe avec notre référente
 en particulier un compte-rendu technique détaillé de notre travail à présenter lors des prochaines réunions avec elle.
 
-\subsubsection{Troisième réunion (14/04/2026)}\label{subsubsec:reu3}
+\subsubsection{Troisième réunion (14/04/2026)}\label{subsubsec:reuRef3}
 La troisième réunion étant la plus récente à ce jour, est la plus abouti en terme de travail.
 Nous avons pu présenter notre travail à notre référente sous la fomre d'un compte-rendu technique résumant les résultats obtenus et les techniques utilisées.
 Cela nous a permis derecevoir des feedbacks constructifs pour améliorer notre travail et orienter nos prochaines étapes.
@@ -471,12 +471,13 @@ Venant de groupes de matières différents, le problème a été de trouver des 
 La quasi totalité préférant le présentiel, nous avont opté pour des réunions en hybride (présentielle et distancielle via \textit{Discord}).
 Pour ce qui est des personnes ne pouvant pas y assister, nous metton en place un compte-rendu permettant de résumer le contenue de la réunion.
 
+\pagebreak
 %--------------------------------------------
 \subsection{Problèmes méthodologique}
 
 \hspace{0.5cm}\textbf{Solution apportée:}
-\subsubsection{Mauvaise compréhension des consignes}
-Lors de notre troisième réunion organisée avec la référente (voir section \ref{subsubsec:reu3}.\nameref{subsubsec:reu3}),
+\subsubsection{Mauvaise compréhension des consignes}\label{subsubsec:probMethoConsignes}
+Lors de notre troisième réunion organisée avec la référente (voir section \ref{subsubsec:reuRef3}.\nameref{subsubsec:reuRef3}),
 nous avons fait la constatation que le travail à réaliser pour l'étape 1 n'était pas entièrement individuelle mais supposé être faites en 2 sous-groupes 
 de 5 personnes se répartissant les tâches à réaliser pour ensuite comparer les résultats obtenus.\\
 Notre méthodes est tout à fait fonctionnelle mais peut efficace, ne corespondant pas à ce qui était attendu par la référente.
@@ -486,7 +487,7 @@ Cela a pu causer des problèmes de qualité du travail réalisé, car celui-ci �
 erreurs et donc pour l'étape 2 nous allons réaliser un organisation beaucoup plus stratégique en repartissant 
 les tâches en deux groupes de 5 personnes, ses deux groupes seront les mêmes que ceux établis pour l'étape 3. 
 
-\subsubsection{Résultats de l'étape 1 impactant l'étape 2}
+\subsubsection{Résultats de l'étape 1 impactant l'étape 2}\label{subsubsec:probMethoResEtape1}
 Pour contexte, lors de l'étape 1, nous avons pu réaliser la modélisation de sujet (\text{topic modeling}) 
 pour extraire les thèmes principaux des conversations, ce qui nous a permis d'identifier les sujets les plus 
 fréquemment abordés par les patients et les thérapeutes. 
@@ -500,30 +501,38 @@ Un problème qui n'est pas encore arrivé mais extrèmement probable si nous ne 
 de l'équipe pour que les résultats soient comparables et cohérents, ce qui nous permettra d'avoir une analyse 
 de sentiments plus précise et pertinente pour la suite du projet.\\
 Ce choix sera fait sur la base d'un vote des membres de l'équipe après avoir comparé les résultats de chacun sur chaque méthodes qu'ils ont pu faire.
-%--------------------------------------------
-\subsubsection{Problème 3}
 
-\hspace{0.5cm}\textbf{Solution apportée:}
-
+\pagebreak
 %--------------------------------------------
 \subsection{Problèmes techniques}
-\subsubsection{Problème 1}
+\subsubsection{Hétérogénéité du nettoyage des données}
+Chaque membre a appliqué un pipeline différent pour le nettoyage, ce qui peut parraitre intéressant
+pour comparer les résultats obtenus, mais cela peut aussi causer des problèmes de cohérence et de comparabilité
+des résultats obtenus, en particulier pour les étapes suivantes qui se basent sur les résultats du nettoyage. \smallbreak
 
-\hspace{0.5cm}\textbf{Solution apportée:}
-
-\subsubsection{Problème 2}
-
-\hspace{0.5cm}\textbf{Solution apportée:}
+\hspace{0.5cm}\textbf{Solution apportée:} Après cette constatation lors de notre 
+\nameref{subsubsec:reuRef2} avec la référente, nous avions installé un tableur décrivant les 
+résultats attendu pour chaque parties de l'étape 1, malheureusement, cette implémentation étant 
+arrivé trop tard, une grand majorité de l'équipe a du refaire une partie de leurs travail.
+Cette erreur étant maintenant corrigé et analysé, nous allons pouvoir éviter ce genre de problème
+pour la suite du projet en définissant des méthodes communes pour chaque étape,
+ce qui nous permettra d'avoir des résultats plus cohérents et comparables entre les membres de l'équipe.
+\subsubsection{Commentaire insuffisant sur les notebooks}
+Beaucoup de membres de l'équipe ont réalisé des notebooks pour leurs différentes tâches, mais certains d'entre eux
+n'ont pas été suffisament commenté, ce qui peut rendre la compréhension du travail plus difficile
+pour les autre membres de l'équipe, en particulier ceux qui ont du élaborer le compte-rendu technique à partir de ces notebooks. \smallbreak
+\hspace{0.5cm}\textbf{Solution apportée:} Nous avons mis en place une règle pour tout les notebooks réalisés pour le projet, 
+qui est de commenter suffisamment le code pour que n'importe quel membre de l'équipe puisse comprendre ce qui a été fait.
 
 % ── Mise à jour du planning ───────────────────────────────────────────────────
 
 \pagebreak
 
 \section{Mise à jour du planning}
-Nous avons pu constater que la première partie de ce projet nous a engendré certains problèmes, 
-ce qui a bien entendu impacté notre planning initial, 
-mais nous avons réagit à temps pour corriger nos erreur et nous avons pu réinitialiser un nouveau planning pour la suite du projet,
-qui nous permettra d'atteindre nos objectifs dans les temps.\\
+Nous avons pu constater que la première partie de ce projet nous a engendré certains 
+problèmes, ce qui a bien entendu impacté notre planning initial, 
+mais nous avons réagit à temps pour corriger nos erreur et nous avons pu réinitialiser 
+un nouveau planning pour la suite du projet, qui nous permettra d'atteindre nos objectifs dans les temps.\\
 
 \begin{figure}[H]
 \resizebox{\textwidth}{!}{% force à tenir sur la largeur de la page
@@ -557,7 +566,7 @@ qui nous permettra d'atteindre nos objectifs dans les temps.\\
 
 \end{ganttchart}
 }
-\caption{\centering\small Planning Gantt initial}
+\caption{\centering\small Planning Gantt \textbf{initial}}
 \end{figure}
 
 \begin{figure}[H]
@@ -574,21 +583,22 @@ qui nous permettra d'atteindre nos objectifs dans les temps.\\
         text width=4cm,
         align=left
     }
-]{2026-03-09}{2026-05-29}
+]{2026-03-02}{2026-05-29}
 
 % En-tête
 \gantttitlecalendar{year, month=name, week} \\
 
 % Tâches
-\ganttbar{Nettoyage des données}{2026-03-09}{2026-03-09} \\
-\ganttbar{Analyse Statistique}{2026-03-10}{2026-03-15} \\
+\ganttbar{Nettoyage des données}{2026-03-02}{2026-03-02} \\
+\ganttbar{Analyse Statistique}{2026-03-03}{2026-03-16} \\
 \ganttbar{Analyse Lexicale}{2026-03-16}{2026-03-18} \\
 \ganttbar{Filtrage manuel}{2026-03-19}{2026-03-19} \\
-\ganttbar{Vectorisation TF-IDF}{2026-03-20}{2026-03-22} \\
-\ganttbar{Word embeddings}{2026-03-23}{2026-03-25} \\
-\ganttbar{Modèle LDA}{2026-03-26}{2026-03-28} \\
-\ganttbar{Étape 2}{2026-03-29}{2026-04-11} \\
-\ganttbar{Étape 3}{2026-04-12}{2026-05-29}
+\ganttbar{Vectorisation TF-IDF}{2026-03-20}{2026-03-30} \\
+\ganttbar{Word embeddings}{2026-03-31}{2026-04-07} \\
+\ganttbar{Modèle LDA}{2026-04-08}{2026-04-14} \\
+\ganttbar{Résolution problèmes étape 1}{2026-04-15}{2026-04-20} \\
+\ganttbar{Étape 2}{2026-04-21}{2026-04-30} \\
+\ganttbar{Étape 3}{2026-05-01}{2026-05-29}
 
 \end{ganttchart}
 }
@@ -602,14 +612,18 @@ Les plannings étant relativement grand, ont étaient mis en Annexe (\ref{subsec
 \section{Suite du projet}
 
 Le future du projet est principalement axé sur l'étape 2 et 3 du projet, qui conciste à analyser les sentiments 
-des conversations et à accéder aux conversations pour faire du résumé et du Q/A sur la santé mentale.
+des conversations puis accéder aux conversations pour faire du résumé et du Q/A sur la santé mentale.
 
 L'étape 2 sera (normallement) plus courte que la première puisqu'elle conciste à utiliser les résultats des modèles de l'étape précédente pour
-faire une analyse de sentiments sur les conversations, ce qui nous permettra d'identifier les émotions exprimées par les patients et les thérapeutes,
+faire une analyse de sentiments sur les conversations, puisque nous avons adapté notre système d'organisation 
+(voir section \nameref{subsubsec:probMethoResEtape1}), les résultats seront plus cohérents et comparables 
+entre les groupes (problème résolu section \nameref{subsubsec:probMethoConsignes}),
+ce qui nous permettra d'identifier les émotions exprimées par les patients et les thérapeutes,
 ainsi que les facteurs qui influencent ces émotions.
 
 Le but étant d'accomplir cette étape dans les temps pour pouvoir se stabiliser sur le nouveau planning initialisé lors de l'étape 1.
 
+Étant un projet très passionnant, nous avons hâte de continuer à travailler dessus et de découvrir les résultats que nous allons obtenir pour les prochaines étapes.
 
 \pagebreak
 
@@ -651,7 +665,7 @@ Le but étant d'accomplir cette étape dans les temps pour pouvoir se stabiliser
 
 \end{ganttchart}
 }
-\caption{\centering\small Planning Gantt initial}
+\caption{\centering\small Planning Gantt \textbf{initial}}
 \end{figure}
 
 \begin{figure}[H]
@@ -668,21 +682,22 @@ Le but étant d'accomplir cette étape dans les temps pour pouvoir se stabiliser
         text width=4cm,
         align=left
     }
-]{2026-03-09}{2026-05-29}
+]{2026-03-02}{2026-05-29}
 
 % En-tête
 \gantttitlecalendar{year, month=name, week} \\
 
 % Tâches
-\ganttbar{Nettoyage des données}{2026-03-09}{2026-03-09} \\
-\ganttbar{Analyse Statistique}{2026-03-10}{2026-03-15} \\
+\ganttbar{Nettoyage des données}{2026-03-02}{2026-03-02} \\
+\ganttbar{Analyse Statistique}{2026-03-03}{2026-03-16} \\
 \ganttbar{Analyse Lexicale}{2026-03-16}{2026-03-18} \\
 \ganttbar{Filtrage manuel}{2026-03-19}{2026-03-19} \\
-\ganttbar{Vectorisation TF-IDF}{2026-03-20}{2026-03-22} \\
-\ganttbar{Word embeddings}{2026-03-23}{2026-03-25} \\
-\ganttbar{Modèle LDA}{2026-03-26}{2026-03-28} \\
-\ganttbar{Étape 2}{2026-03-29}{2026-04-11} \\
-\ganttbar{Étape 3}{2026-04-12}{2026-05-29}
+\ganttbar{Vectorisation TF-IDF}{2026-03-20}{2026-03-30} \\
+\ganttbar{Word embeddings}{2026-03-31}{2026-04-07} \\
+\ganttbar{Modèle LDA}{2026-04-08}{2026-04-14} \\
+\ganttbar{Résolution problèmes étape 1}{2026-04-15}{2026-04-20} \\
+\ganttbar{Étape 2}{2026-04-21}{2026-04-30} \\
+\ganttbar{Étape 3}{2026-05-01}{2026-05-29}
 
 \end{ganttchart}
 }
